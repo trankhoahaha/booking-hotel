@@ -70,6 +70,7 @@ public class RoomController {
     }
 
     @GetMapping("/searchByStatus")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<List<Room>> searchRoomByStatus(@RequestParam(required = false) String status) {
         List<Room> rooms = roomService.searchRoomByStatus(status);
         return ResponseEntity.ok(rooms);

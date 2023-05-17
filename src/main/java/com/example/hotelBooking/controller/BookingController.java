@@ -26,6 +26,7 @@ public class BookingController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<Booking> getBookingById(@PathVariable("id") Long id) {
         Booking booking = bookingService.getBookingById(id);
         if (booking != null) {
@@ -36,6 +37,7 @@ public class BookingController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
         Booking createdBooking = bookingService.createBooking(booking);
         if (createdBooking != null) {
@@ -45,6 +47,7 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<Booking> updateBooking(@PathVariable("id") Long id, @RequestBody Booking booking) {
         Booking updatedBooking = bookingService.updateBooking(id, booking);
         if (updatedBooking != null) {
@@ -55,6 +58,7 @@ public class BookingController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<Void> deleteBooking(@PathVariable("id") Long id) {
         boolean deleted = bookingService.deleteBooking(id);
         if (deleted) {
@@ -65,6 +69,7 @@ public class BookingController {
     }
 
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<List<Booking>> getBookingsByUser(@PathVariable("userId") Long userId) {
         List<Booking> bookings = bookingService.getListBookingByUser(userId);
         return ResponseEntity.ok(bookings);

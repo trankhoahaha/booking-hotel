@@ -2,6 +2,7 @@ package com.example.hotelBooking.payload.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,16 +13,17 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
-    @NotBlank
+    @NotBlank(message = "Name shouldn't be blank!")
     private String name;
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email shouldn't be blank!")
+    @Email(message = "Invalid email address!")
     private String email;
-    @NotBlank
+    @NotBlank(message = "Phone number shouldn't be blank!")
+    @Pattern(regexp = "^\\d{10}$", message = "Invalid phone number!")
     private String phoneNumber;
-    @NotBlank
+    @NotBlank(message = "Username shouldn't be blank!")
     private String username;
-    @NotBlank
+    @NotBlank(message = "Password shouldn't be blank!")
     private String password;
 
     private Set<String> roles;

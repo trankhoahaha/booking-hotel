@@ -21,7 +21,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + 86400000))
+                .setExpiration(new Date((new Date()).getTime() + BookingHotelConstant.JWT_EXPIRED_TIME))
                 .signWith(SignatureAlgorithm.HS512, BookingHotelConstant.JWT_SECRET)
                 .compact();
     }

@@ -3,6 +3,7 @@ package com.example.hotelBooking.service;
 import com.example.hotelBooking.entity.Room;
 import com.example.hotelBooking.payload.request.SearchRoomRequest;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RoomService {
@@ -16,7 +17,9 @@ public interface RoomService {
 
     Boolean deleteRoom(Long id);
 
-    List<Room> searchRoom(SearchRoomRequest searchRoomRequest);
+    List<Room> searchRoomByAvailability(SearchRoomRequest searchRoomRequest);
 
-    List<Room> searchRoomByStatus(String status);
+    int getMaxNumberOfAdult();
+
+    int getMaxNumberOfChildren();
 }

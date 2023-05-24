@@ -33,13 +33,11 @@ public class Room {
     @Column(name = "children_max")
     private int childrenMax;
 
-    @Column(name = "status")
-    private String status;
 
     @Column(name = "price")
     private double price;
 
-    @OneToMany
-    @JoinColumn(referencedColumnName = "room_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_id")
     private List<Image> images;
 }

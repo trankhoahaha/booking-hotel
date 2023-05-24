@@ -11,10 +11,21 @@ import java.util.List;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
-    @Query("SELECT r FROM Room r WHERE r.type IN :#{#searchPayload.types} " +
-            "AND r.adultsMax <= :#{#searchPayload.adultsMax} " +
-            "AND r.childrenMax <= :#{#searchPayload.childrenMax}")
-    List<Room> searchRoom(@Param("searchPayload") SearchRoomRequest searchPayload);
+    @Query("select max(r.adultsMax) from Room r")
+    int getMaxNumberOfAdult();
 
-    List<Room> findByStatus(String status);
+    @Query("select max(r.childrenMax) from Room r")
+    int getMaxNumberOfChildren();
+
+    @Query("SELECT r FROM Room r WHERE " +
+            ":#{#searchPayload.adultsMax} <= r.adultsMax and " +
+            ":#{#searchPayload.childrenMax} <= r.childrenMax and " +
+            "r.id NOT IN " +
+            "(SELECT b.room.id FROM Booking b WHERE " +
+            "((:#{#searchPayload.endDate} > b.checkInDate AND :#{#searchPayload.endDate}  < b.checkOutDate) OR " +
+            "(:#{#searchPayload.startDate}  > b.checkInDate AND :#{#searchPayload.startDate}  < b.checkOutDate) OR " +
+            "(:#{#searchPayload.startDate}  <= b.checkInDate AND :#{#searchPayload.endDate}  >= b.checkOutDate)) " +
+            "AND b.status in ('booked', 'checked in'))")
+    List<Room> searchRoomByAvailability(@Param("searchPayload") SearchRoomRequest searchPayload);
+
 }

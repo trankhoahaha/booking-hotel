@@ -6,7 +6,6 @@ import com.example.hotelBooking.repository.RoomRepository;
 import com.example.hotelBooking.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -34,11 +33,11 @@ public class RoomServiceImpl implements RoomService {
     public Room updateRoom(Long id, Room updatedRoom) {
         Room existingRoom = roomRepository.findById(id).orElse(null);
         if (existingRoom != null) {
+            existingRoom.setName(updatedRoom.getName());
             existingRoom.setType(updatedRoom.getType());
             existingRoom.setAdultsMax(updatedRoom.getAdultsMax());
             existingRoom.setChildrenMax(updatedRoom.getChildrenMax());
             existingRoom.setDescription(updatedRoom.getDescription());
-            existingRoom.setStatus(updatedRoom.getStatus());
             existingRoom.setPrice(updatedRoom.getPrice());
             // Update images if provided
             if (updatedRoom.getImages() != null) {
@@ -59,16 +58,19 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
+
     @Override
-    public List<Room> searchRoom(SearchRoomRequest searchRoomRequest) {
-        return roomRepository.searchRoom(searchRoomRequest);
+    public List<Room> searchRoomByAvailability(SearchRoomRequest searchRoomRequest) {
+        return roomRepository.searchRoomByAvailability(searchRoomRequest);
     }
 
     @Override
-    public List<Room> searchRoomByStatus(String status) {
-        if(StringUtils.isEmpty(status)) {
-            return roomRepository.findAll();
-        }
-        return roomRepository.findByStatus(status);
+    public int getMaxNumberOfAdult() {
+        return roomRepository.getMaxNumberOfAdult();
+    }
+
+    @Override
+    public int getMaxNumberOfChildren() {
+        return roomRepository.getMaxNumberOfChildren();
     }
 }
